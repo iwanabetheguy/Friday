@@ -1,6 +1,8 @@
 package com.example.demo.controller.api;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.example.demo.baen.PostFridayInfoRequest;
 import com.example.demo.service.*;
 import org.slf4j.Logger;
@@ -32,9 +34,9 @@ public class ApiIndexController {
 
     // Friday开始
     @PostMapping("/friday/start")
-    public String friday_start(@RequestBody PostFridayInfoRequest request) {
+    public Object friday_start(@RequestBody PostFridayInfoRequest request) {
         logger.info("request-->>{}", JSON.toJSONString(request));
-        return fridayService.start(request);
+        return JSONObject.parse(JSON.toJSONString(fridayService.start(request), SerializerFeature.DisableCircularReferenceDetect));
     }
 
     @RequestMapping("/test")

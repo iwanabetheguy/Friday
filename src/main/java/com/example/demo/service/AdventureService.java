@@ -72,7 +72,6 @@ public class AdventureService {
         Collections.shuffle(this.adventure_dis_cards);
         this.adventure_cards = this.adventure_dis_cards;
         this.adventure_dis_cards.clear();
-        fridayService.friday_module = "daw_adventure_card";
         return true;
     }
 }

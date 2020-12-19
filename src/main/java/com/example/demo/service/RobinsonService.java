@@ -24,11 +24,11 @@ public class RobinsonService {
     // 鲁滨逊阶段段（保存当前免费抽的鲁滨逊牌）
     public ArrayList<RobinsonCard> robinson_action_left_cards;
     // 鲁滨逊阶段段（保存当前额外抽的鲁滨逊牌）
-    public ArrayList<RobinsonCard> robinson_action_rigth_cards;
+    public ArrayList<RobinsonCard> robinson_action_right_cards;
 
     // 鲁滨逊阶段段（保存当前鲁滨逊牌的效果执行）
     public ArrayList<RobinsonCard> robinson_action_left_effect_card;
-    public ArrayList<RobinsonCard> robinson_action_rigth_effect_card;
+    public ArrayList<RobinsonCard> robinson_action_right_effect_card;
 
     // 鲁滨逊阶段段（保存当前鲁滨逊牌的预言牌）
     public ArrayList<RobinsonCard> robinson_action_effect_predict_cards;
@@ -38,7 +38,7 @@ public class RobinsonService {
 
     // 检查鲁滨逊牌的数量
     public Boolean check_robinson_cards() {
-        if (this.robinson_cards.size()>0){
+        if (this.robinson_cards.size() > 0) {
             return true;
         } else {
             return false;
@@ -56,33 +56,23 @@ public class RobinsonService {
                 robinsonCard.setIsUseEffect(false);
                 this.robinson_free_number = 0;
             } else {
-                this.robinson_free_number = this.robinson_free_number--;
+                --this.robinson_free_number;
             }
             this.robinson_action_left_cards.add(robinsonCard);
             return this.robinson_action_left_cards;
         } else {
-            fridayService.life = fridayService.life--;
-            this.robinson_action_rigth_cards.add(this.robinson_cards.remove(0));
-            return this.robinson_action_rigth_cards;
+            --fridayService.life;
+            this.robinson_action_right_cards.add(this.robinson_cards.remove(0));
+            return this.robinson_action_right_cards;
         }
-    }
-
-    // 弃鲁滨逊牌
-    public Boolean dis_robinson_card(String robinsonAction,int adventure_action_card_index) {
-        if (robinsonAction.equals("right")){
-            this.robinson_action_rigth_cards.remove(adventure_action_card_index);
-        } else {
-            this.robinson_action_left_cards.remove(adventure_action_card_index);
-        }
-        return true;
     }
 
     // 使用鲁滨逊牌的效果
     public Boolean effect_robinson_card(String robinsonAction,int adventure_action_card_index) {
         String robinson_card_effect;
         if (robinsonAction.equals("right")){
-            this.robinson_action_rigth_cards.get(adventure_action_card_index).setIsUseEffect(false);
-            robinson_card_effect = this.robinson_action_rigth_cards.get(adventure_action_card_index).getEffect();
+            this.robinson_action_right_cards.get(adventure_action_card_index).setIsUseEffect(false);
+            robinson_card_effect = this.robinson_action_right_cards.get(adventure_action_card_index).getEffect();
         } else {
             this.robinson_action_left_cards.get(adventure_action_card_index).setIsUseEffect(false);
             robinson_card_effect = this.robinson_action_left_cards.get(adventure_action_card_index).getEffect();
@@ -90,7 +80,7 @@ public class RobinsonService {
         switch (robinson_card_effect){
             case "+1生命值":
                 if (fridayService.life < 20) {
-                    fridayService.life = fridayService.life++;
+                    ++fridayService.life;
                 }
                 break;
             case "+2生命值":
@@ -103,7 +93,7 @@ public class RobinsonService {
                 fridayService.friday_module = "robinson_effect_card:bottom";
                 break;
             case "+1张牌":
-                this.robinson_action_rigth_cards.add(this.robinson_cards.remove(0));
+                this.robinson_action_right_cards.add(this.robinson_cards.remove(0));
                 break;
             case "1×摧毁":
                 this.robinson_action_effect_card(robinsonAction,adventure_action_card_index);
@@ -149,7 +139,7 @@ public class RobinsonService {
     private Boolean robinson_action_effect_card(String robinsonAction,int adventure_action_card_index){
         if (robinsonAction.equals("right")) {
             // 移除鲁滨逊牌执行区的鲁滨逊牌并放入鲁滨逊牌的技能执行区
-            robinson_action_rigth_effect_card.add(this.robinson_action_rigth_cards.remove(adventure_action_card_index));
+            robinson_action_right_effect_card.add(this.robinson_action_right_cards.remove(adventure_action_card_index));
         } else {
             // 移除鲁滨逊牌执行区的鲁滨逊牌并放入鲁滨逊牌的技能执行区
             robinson_action_left_effect_card.add(this.robinson_action_left_cards.remove(adventure_action_card_index));
